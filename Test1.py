@@ -28,6 +28,7 @@ display = (window_width, window_height)
 screen = pygame.display.set_mode(display, DOUBLEBUF | OPENGL)
 displayCenter = [screen.get_size()[i] // 2 for i in range(2)]
 pygame.mouse.set_pos(displayCenter)
+pygame.mouse.set_cursor((8,8),(0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0))
 
 # Настройка OpenGL
 glClearColor(0.1, 0.2, 0.2, 1)
@@ -69,15 +70,16 @@ def draw_snowman():
 # Функция для создания снежинок
 def create_snowflakes():
     snowflakes = []
-    for i in range(400):
-        x = random.uniform(-10, 10)
-        y = random.uniform(-2, 4)
-        z = random.uniform(-10, 10)
+    for i in range(800):
+        x = random.uniform(-50, 50)
+        y = random.uniform(-2, 20)
+        z = random.uniform(-50, 50)
         snowflakes.append([x, y, z])
     return snowflakes
 
 # Главный цикл
 def main():
+    up_down_angle = 0.0
     snowflakes = create_snowflakes()
     mouseMove = [0, 0]
     while True:
@@ -85,13 +87,15 @@ def main():
             if event.type == pygame.QUIT or ((event.type == pygame.KEYDOWN) and (event.key == pygame.K_ESCAPE)):
                 pygame.quit()
                 quit()
-            # if event.type == pygame.MOUSEMOTION:
-            #     mouseMove = [event.pos[i] - displayCenter[i] for i in range(2)]
-            #     pygame.mouse.set_pos(displayCenter)
+            if event.type == pygame.MOUSEMOTION:
+                mouseMove = [event.pos[i] - displayCenter[i] for i in range(2)]
+                pygame.mouse.set_pos(displayCenter)
 
         # Умправление камерой использую мышку
         # mouseMove = pygame.mouse.get_rel()
         mouseMove = pygame.mouse.get_rel()
+        # up_down_angle += mouseMove[1] * 0.0001
+        # glRotatef(up_down_angle, 1.0, 0.0, 0.0)
         glRotatef(mouseMove[0] * 0.1, 0.0, 1.0, 0.0)
         # glRotatef(mouseMove[0] * 0.1, 0.0, 1.0, 0.0)
 
@@ -126,9 +130,9 @@ def main():
             glTranslate(snowflake[0], snowflake[1], snowflake[2])
             glutSolidSphere(0.05, 10, 10)
             glColor3fv(white)
-            snowflake[1] -= 0.01
+            snowflake[1] -= 0.1
             if snowflake[1] < -2:
-                snowflake[1] = 2
+                snowflake[1] = 25
             glPopMatrix()
 
 

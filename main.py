@@ -40,6 +40,7 @@ up_down_angle = 0.0
 paused = False
 run = True
 while run:
+    gluLookAt(0, -8, 0, 0, 0, 0, 0, 0, 1)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
